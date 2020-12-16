@@ -1,26 +1,24 @@
 import aocutils
 
 
-def candidates_from_period(first, distance):
+def candidates_from_period(first, period):
     v = first
     while True:
         yield v
-        v += distance
+        v += period
 
 
-def solve(bus, candidates):
+def find_solutions(bus, candidates):
     for t in candidates:
         bus_period, offset = bus
         if (t + offset) % bus_period == 0:
-            return t
-
-    assert False
+            yield t
 
 
 def period_of(bus, candidates):
-    # NOTE: Abusing that generators will resume where you left of if you reuse them
-    first_t = solve(bus, candidates)
-    second_t = solve(bus, candidates)
+    solutions = find_solutions(bus, candidates)
+    first_t = next(solutions)
+    second_t = next(solutions)
     period = second_t - first_t
     return first_t, period
 
@@ -29,18 +27,15 @@ def main(file):
     print("RUNNING", file)
     lines = list(aocutils.readlines(file))
     buses = []
-    for i, x in enumerate(lines[1].split(",")):
-        if x != 'x':
-            buses.append((int(x), i))
+    for offset, number in enumerate(lines[1].split(",")):
+        if number != 'x':
+            buses.append((int(number), offset))
 
-    # print(buses)
     bus_period, offset = buses[0]
-    first, period = bus_period - offset, bus_period
-    for i in range(1, len(buses)):
-        first, period = period_of(buses[i], candidates_from_period(first, period))
-        # print(buses[:i])
-        # print(first, period)
-    print(first)
+    first_t, period = bus_period - offset, bus_period
+    for bus in buses[1:]:
+        first_t, period = period_of(bus, candidates_from_period(first_t, period))
+    print(first_t)
 
 
 if __name__ == '__main__':
