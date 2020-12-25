@@ -66,7 +66,9 @@ def main(file):
         whiten = set()
         for x, y in black:
             for dx, dy in moves.values():
-                white.add((x + dx, y + dy))
+                c = (x + dx, y + dy)
+                if c not in black:
+                    white.add(c)
         for cord in black:
             b = adjacent(cord)
             if b == 0 or b > 2:
