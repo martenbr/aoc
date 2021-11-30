@@ -1,4 +1,4 @@
-from dec04.passport2 import check_field
+from aoc2020.dec04.passport2 import check_field
 
 
 def test_field():
