@@ -1,3 +1,5 @@
+import heapq
+
 import aocutils
 
 
@@ -20,29 +22,37 @@ def main(file):
                     new_grid[i * len(grid) + y][j * len(grid[0]) + x] = new_cost
 
     grid = new_grid
-    costs = {}
-    costs[(0, 0)] = 0
-    q = [(0, 0, 0)]
 
-    while q:
-        cost, x, y = q.pop()
-        # print(x,y,cost)
-        if x == len(grid[0]) - 1 and y == len(grid) - 1:
-            print(cost)
-            return
+    def neighbors(node):
+        x0, y0 = node
         for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            x1 = x + dx
-            y1 = y + dy
-            if x1 >= len(grid[0]) or x1 < 0:
+            x = x0 + dx
+            y = y0 + dy
+            if x >= len(grid[0]) or x < 0:
                 continue
-            if y1 >= len(grid) or y1 < 0:
+            if y >= len(grid) or y < 0:
                 continue
-            new_cost = cost + grid[y1][x1]
-            if (x1, y1) in costs and costs[(x1, y1)] <= new_cost:
+            edge_cost = grid[y][x]
+            yield edge_cost, (x, y)
+
+    start = (0, 0)
+    dest = (len(grid[0]) - 1, len(grid) - 1)
+    print(dijkstra(neighbors, start, dest))
+
+
+def dijkstra(neighbors, start, dest):
+    costs = {}
+    q = [(0, start)]
+    while q:
+        cost, node = heapq.heappop(q)
+        if node == dest:
+            return cost
+        for edge_cost, node in neighbors(node):
+            new_cost = cost + edge_cost
+            if node in costs and costs[node] <= new_cost:
                 continue
-            costs[(x1, y1)] = new_cost
-            q.append((new_cost, x1, y1))
-        q.sort(reverse=True)
+            costs[node] = new_cost
+            heapq.heappush(q, (new_cost, node))
     assert False
 
 
