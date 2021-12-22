@@ -40,27 +40,27 @@ def main(file):
         assert x0 <= x1
         assert y0 <= y1
         assert z0 <= z1
-        cube = Cuboid(x0, x1, y0, y1, z0, z1)
-        # First turn off all cubes inside the cuboid
+        cuboid = Cuboid(x0, x1, y0, y1, z0, z1)
+        # Turn off all cubes inside the cuboid by doing
+        # the inverse of all actions so far, but only in the
+        # intersection with the cuboid
         new_actions = []
         for prev_action_type, c in actions:
             if prev_action_type == 'on':
-                # Turn off cubes that are on
-                if cube_overlap := overlap(c, cube):
-                    new_actions.append(('off', cube_overlap))
-                    total -= size(cube_overlap)
+                if overlap_cuboid := overlap(c, cuboid):
+                    new_actions.append(('off', overlap_cuboid))
+                    total -= size(overlap_cuboid)
             elif prev_action_type == 'off':
-                # .. actually some of those cubes we turned off were already off, turn them on again to compensate
-                if cube_overlap := overlap(c, cube):
-                    new_actions.append(('on', cube_overlap))
-                    total += size(cube_overlap)
+                if overlap_cuboid := overlap(c, cuboid):
+                    new_actions.append(('on', overlap_cuboid))
+                    total += size(overlap_cuboid)
         actions.extend(new_actions)
 
-        # All cubes in c are now off, if we were supposed to turn them on then we do that
+        # All cubes in cuboid are now off, turn them on if this was an 'on' action
         if action_type == 'on':
-            actions.append(('on', cube))
-            total += size(cube)
-
+            actions.append(('on', cuboid))
+            total += size(cuboid)
+    print(len(actions))
     print(total)
 
 
