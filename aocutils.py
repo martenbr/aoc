@@ -7,7 +7,7 @@ def readsections(file):
 
 def readlines(file):
     for line in open(file):
-        yield line.strip()
+        yield line.strip('\r\n')
 
 
 def multisplit(line: str, tokens: List[str]):
