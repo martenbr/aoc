@@ -1,5 +1,3 @@
-import heapq
-
 import aocutils
 
 
@@ -37,23 +35,7 @@ def main(file):
 
     start = (0, 0)
     dest = (len(grid[0]) - 1, len(grid) - 1)
-    print(dijkstra(neighbors, start, dest))
-
-
-def dijkstra(neighbors, start, dest):
-    costs = {}
-    q = [(0, start)]
-    while q:
-        cost, node = heapq.heappop(q)
-        if node == dest:
-            return cost
-        for edge_cost, node in neighbors(node):
-            new_cost = cost + edge_cost
-            if node in costs and costs[node] <= new_cost:
-                continue
-            costs[node] = new_cost
-            heapq.heappush(q, (new_cost, node))
-    assert False
+    print(aocutils.dijkstra(neighbors, start, dest))
 
 
 if __name__ == '__main__':

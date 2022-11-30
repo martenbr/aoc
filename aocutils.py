@@ -1,3 +1,4 @@
+import heapq
 from typing import List
 
 
@@ -31,3 +32,19 @@ def sections_from_lines(lines):
             section.append(line)
     if section:
         yield section
+
+
+def dijkstra(neighbors, start, dest):
+    costs = {}
+    q = [(0, start)]
+    while q:
+        cost, node = heapq.heappop(q)
+        if node == dest:
+            return cost
+        for edge_cost, node in neighbors(node):
+            new_cost = cost + edge_cost
+            if node in costs and costs[node] <= new_cost:
+                continue
+            costs[node] = new_cost
+            heapq.heappush(q, (new_cost, node))
+    assert False
