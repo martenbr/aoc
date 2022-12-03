@@ -3,12 +3,11 @@ import aocutils
 
 def main(file):
     print("RUNNING", file)
-    m = []
+    m = 0
     for sec in aocutils.readsections(file):
-        a = sum(int(x)for x in sec)
-        m.append(a)
-    m.sort(reverse=True)
-    print(sum(m[0:3]))
+        a = sum(int(x) for x in sec)
+        m = max(m, a)
+    print(m)
 
 
 if __name__ == '__main__':
