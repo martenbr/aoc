@@ -1,4 +1,5 @@
 import heapq
+import re
 from typing import List
 
 
@@ -32,6 +33,13 @@ def sections_from_lines(lines):
             section.append(line)
     if section:
         yield section
+
+
+def parseints(line, negative=False):
+    if negative:
+        return [int(x) for x in re.findall(r'-?\d+', line)]
+    else:
+        return [int(x) for x in re.findall(r'\d+', line)]
 
 
 def dijkstra(neighbors, start, dest):

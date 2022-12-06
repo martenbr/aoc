@@ -17,10 +17,7 @@ def main(file):
             if c != ' ':
                 stacks[i+1].append(c)
     for ins in inst:
-        _, cnt, fr, to, = aocutils.multisplit(ins, ['move ',' from ',' to '])
-        cnt = int(cnt)
-        fr = int(fr)
-        to = int(to)
+        cnt, fr, to = aocutils.parseints(ins)
         crane = []
         for _ in range(cnt):
             if stacks[fr]:
