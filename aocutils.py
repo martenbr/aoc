@@ -24,7 +24,7 @@ def multisplit(line: str, tokens: List[str]):
 def sections_from_lines(lines):
     section = []
     for line in lines:
-        line = line.strip()
+        line = line.strip('\r\n')
         if line == "":
             yield section
             section = []
