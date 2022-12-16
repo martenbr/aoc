@@ -55,4 +55,7 @@ def dijkstra(neighbors, start, dest):
                 continue
             costs[node] = new_cost
             heapq.heappush(q, (new_cost, node))
-    assert False
+    if dest is None:
+        return costs
+    else:
+        assert False
